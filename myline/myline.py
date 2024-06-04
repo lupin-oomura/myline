@@ -37,11 +37,6 @@ class myline:
 
         return 'OK'
 
-
-    def handle_message(self, event):
-        with ApiClient(self.configuration) as api_client:
-            line_bot_api = MessagingApi(api_client)
-
     def get_username(self, event) :
         profile = self.line_bot_api.get_profile(event.source.user_id)
         return profile.display_name
@@ -50,6 +45,10 @@ class myline:
         return self.handler
     
     def send_message(self, event, text):
+        if text.strip() == "" :
+            print("no message")
+            return
+        
         message_dict = {
             'to': event.source.user_id,
             'messages': [
@@ -61,6 +60,10 @@ class myline:
         )
 
     def reply_message(self, event, text) :
+        if text.strip() == "" :
+            print("no message")
+            return
+
         self.line_bot_api.reply_message_with_http_info(
             ReplyMessageRequest(
                 reply_token=event.reply_token,
@@ -142,4 +145,5 @@ class myline:
 #--- ローカルで通信を試す場合、ngrokがすごく便利 -------------------#
 #----------------------------------------------------------------#
 # ./ngrok http http://localhost:5000
-# 初めて使うときは、トークン的なものを通す必要がある。
+# 初めて使うときは、トークン認証を通す必要がある。
+# ngrok config add-authtoken マイページにある認証トークン
