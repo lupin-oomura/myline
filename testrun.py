@@ -4,13 +4,15 @@ from linebot.v3.webhooks import (
     MessageEvent,
     TextMessageContent
 )
-from myline import myline
+# from myline import myline #ローカルのmyline.pyを使う場合
+import myline #ライブラリのmyline.pyを使う場合
 
 at = os.getenv('LINE_ACCESS_TOKEN')
 secret = os.getenv('LINE_SECRET_KEY')
 
 app = Flask(__name__)
-ml = myline(at, secret)
+# ml = myline(at, secret) #ローカルのmyline.pyを使う場合
+ml = myline.myline(at, secret) #ライブラリのmyline.pyを使う場合
 line_handler = ml.get_handler()
 
 
